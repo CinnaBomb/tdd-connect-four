@@ -69,24 +69,24 @@ describe ConnectFour do
 		end
 	end
 	
-describe "#draw?" do
-	context "given a board with a win" do
-		it "returns false" do
-			expect().to eq()
-		end
-		context "given a full board with no wins" do
-			it "returns true"
-			expect().to eq()
+	describe "#draw?" do
+		context "given a board with a win" do
+			it "returns false" do
+				expect().to eq()
+			end
+			context "given a full board with no wins" do
+				it "returns true"
+				expect().to eq()
+			end
 		end
 	end
-end
 
-describe "#valid_move?" do
-	it "returns true if column not full" do
-		expect().to eq()
-		expect().to eq()
+	describe "#valid_move?" do
+		it "returns true if column not full" do
+			expect().to eq()
+			expect().to eq()
+		end
 	end
-end
 
 	describe "#play_again" do
 		it "returns true if choice is 'y' or 'yes'" do
