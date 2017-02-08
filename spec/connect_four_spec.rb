@@ -3,7 +3,7 @@ require './connect_four'
 
 describe ConnectFour do
 
-	before (:context) do
+	before (:example) do
 		@c = ConnectFour.new
 	end
 	
@@ -14,11 +14,40 @@ describe ConnectFour do
 		end
 	end
 
+	describe "#board_visual" do
+		it "displays board properly" do
+			@c.board_array[0] = ["⚫","⚫","⚫","⚫","⚫"," "]
+			@c.board_array[6] = ["⚪","⚪","⚪","⚪","⚪"," "]
+			expect(@c.board_visual(@c.board_array)).to eq(%Q(
+		[ ][ ][ ][ ][ ][ ][ ]
+		[⚫][ ][ ][ ][ ][ ][⚪]
+		[⚫][ ][ ][ ][ ][ ][⚪]
+		[⚫][ ][ ][ ][ ][ ][⚪]
+		[⚫][ ][ ][ ][ ][ ][⚪]
+		[⚫][ ][ ][ ][ ][ ][⚪]
+		))
+		end
+	end
+
 	describe "#update_board_array" do
 		it "places multiple tokens correctly in board" do
-			expect(@c.update_board_array(1, 1)).to eq([[" ", " ", " ", " ", " ", " "], ["⚪", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " "]]
+			expect(@c.update_board_array(1, 1)).to eq([
+				[" ", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "]]
 				)
-			expect(@c.update_board_array(2, 1)).to eq([[" ", " ", " ", " ", " ", " "], ["⚪", "⚫", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " "]]
+			expect(@c.update_board_array(2, 1)).to eq([
+				[" ", " ", " ", " ", " ", " "], 
+				["⚪", "⚫", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "]]
 				)
 		end
 	end
@@ -55,28 +84,155 @@ describe ConnectFour do
 			end
 		end
 	end
-	describe "#board_visual" do
-		it "displays board properly" do
-			expect().to eq()
-			expect().to eq()
+
+		describe "#vert_win?" do
+		it "returns true if there is a vertical win (tilt head to the right)" do
+			t = @c.board_array = [
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				["⚪", "⚪", "⚪", "⚪", " ", " "]]
+			expect(@c.vert_win?(t)).to eq(true)
+
+			f = @c.board_array = [
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "]]
+			expect(@c.vert_win?(f)).to eq(false)
 		end
 	end
 
-	describe "#game_won?" do
-		it "returns true if game won" do
-			expect().to eq()
-			expect().to eq()
+
+		describe "#horiz_win?" do
+		it "returns true if there is a horizonal win (tilt head to the right)" do
+				t = @c.board_array = [
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				["⚫", " ", " ", " ", " ", " "], 
+				["⚫", " ", " ", " ", " ", " "], 
+				["⚫", " ", " ", " ", " ", " "], 
+				["⚫", " ", " ", " ", " ", " "]]
+			expect(@c.horiz_win?(t)).to eq(true)
+
+				f = @c.board_array = [
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				["⚪", "⚪", "⚪", "⚪", " ", " "]]
+			expect(@c.horiz_win?(f)).to eq(false)
 		end
 	end
+
+
+	describe "#diag_win?" do
+		it "returns true if there is a diagonal win (tilt head to the right)" do
+				t = @c.board_array = [
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", "⚪", " ", " "], 
+				[" ", " ", "⚪", " ", " ", " "], 
+				[" ", "⚪", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "]]
+			expect(@c.diag_win?(t)).to eq(true)
+				t = @c.board_array = [
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				[" ", "⚪", " ", " ", " ", " "], 
+				[" ", " ", "⚪", " ", " ", " "], 
+				[" ", " ", " ", "⚪", " ", " "]]
+			expect(@c.diag_win?(t)).to eq(true)
+				f = @c.board_array = [
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "]]
+			expect(@c.diag_win?(f)).to eq(false)
+		end
+	end
+
+
+
+	describe "#game_won?" do
+		it "returns true for horiz win" do
+			win = @c.board_array = [
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "]]
+			expect(@c.game_won?(win)).to eq(true)
+		end
+		it "returns false for no win" do
+			lose = @c.board_array = [
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				["⚫", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚫", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "]]
+			expect(@c.game_won?(lose)).to eq(false)
+		end
+	end
+
 	
 	describe "#draw?" do
 		context "given a board with a win" do
 			it "returns false" do
-				expect().to eq()
+				f = @c.board_array = [
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				[" ", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "], 
+				["⚪", " ", " ", " ", " ", " "]]
+			expect(@c.draw?(f)).to eq(false)
 			end
-			context "given a full board with no wins" do
-				it "returns true"
-				expect().to eq()
+		end
+		context "given a full board with one win" do
+			it "returns false" do
+				f = @c.board_array = [
+				["⚪", "⚫", "⚪", "⚫", "⚫", "⚫"], 
+				["⚫", "⚪", "⚫", "⚪", "⚫", "⚪"], 
+				["⚫", "⚪", "⚫", "⚪", "⚫", "⚪"], 
+				["⚫", "⚪", "⚫", "⚪", "⚫", "⚪"], 
+				["⚪", "⚫", "⚪", "⚫", "⚪", "⚫"], 
+				["⚪", "⚫", "⚪", "⚫", "⚪", "⚫"], 
+				["⚪", "⚫", "⚪", "⚫", "⚪", "⚫"]]
+			expect(@c.draw?(f)).to eq(false)
+			end
+		end
+		context "given a full board with no wins" do
+			it "returns true" do
+				t = @c.board_array = [
+				["⚪", "⚫", "⚪", "⚫", "⚪", "⚫"], 
+				["⚫", "⚪", "⚫", "⚪", "⚫", "⚪"], 
+				["⚫", "⚪", "⚫", "⚪", "⚫", "⚪"], 
+				["⚫", "⚪", "⚫", "⚪", "⚫", "⚪"], 
+				["⚪", "⚫", "⚪", "⚫", "⚪", "⚫"], 
+				["⚪", "⚫", "⚪", "⚫", "⚪", "⚫"], 
+				["⚪", "⚫", "⚪", "⚫", "⚪", "⚫"]]
+			expect(@c.draw?(t)).to eq(true)
 			end
 		end
 	end

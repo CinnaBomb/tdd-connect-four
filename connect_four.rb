@@ -29,7 +29,9 @@ class ConnectFour
 	end
 
 	def token(player)
+		#outlined circle
 		return "\u26AA" if player == 1
+		#filled-in circle
 		return "\u26AB" if player == 2
 
 	end
@@ -50,14 +52,65 @@ class ConnectFour
 		column
 	end
 
-	def game_won?
-		#return true if any 4 consecutive in array[columns]
-		#return true if any 4 cons in array[rows]
-		#return true for diagonals
+	def vert_win?(board_array)
+
+
+		board_array.each do |row|
+			p1_count = 0
+			p2_count = 0
+			row.each do |spot|
+				if spot == "⚪"
+					p1_count += 1
+					p2_count = 0
+
+				elsif  spot == "⚫"
+					p2_count += 1
+					p1_count = 0
+				end
+				return true if p1_count == 4 || p2_count ==4
+			end
+		end
+		false
+
+	end
+
+	def horiz_win?(board_array)
+		b = board_array
+		for i in (0..5)
+			p1_count = 0
+			p2_count = 0
+			for j in (0...board_array.length)
+				#puts b[j][i]
+				if b[j][i] == "⚪"
+					p1_count += 1
+					p2_count = 0
+				elsif  b[j][i] == "⚫"
+					p2_count += 1
+					p1_count = 0
+				end
+				#puts "p1count: #{p1_count}"
+				#puts "p2count: #{p2_count}"
+				return true if p1_count == 4 || p2_count ==4
+			end
+		end
 		false
 	end
 
-	def draw?
+
+
+	def diag_win?(board_array)
+		return true
+		false
+	end
+
+	def game_won?(board_array)
+		b = board_array
+		return true if horiz_win?(b) || vert_win?(b) || diag_win?(b)
+		false
+	end
+
+
+	def draw?(board_array)
 		return false if game_won?
 		@board_array.each do |column|
 			return false if column.any?(" ")
@@ -67,8 +120,8 @@ class ConnectFour
 
 
 end
-
-c = ConnectFour.new
-c.board_array = Array.new(7) {Array.new(6, "⚪")}
-puts c.board_array.inspect
+#
+#c = ConnectFour.new
+#c.board_array = Array.new(7) {Array.new(6, "⚪")}
+#puts c.board_array.inspect
 
